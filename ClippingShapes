@@ -1,0 +1,38 @@
+package assignment3;
+
+import java.awt.*;
+import javax.swing.*;
+
+import assignment3.ClippingShapes.CvTrianlges;
+
+public class ClippingDriver extends JFrame
+{
+	int WIN_HEIGHT = 700;
+	int WIN_WIDTH = 900;
+
+	Button lights;
+
+	public ClippingDriver()
+	{
+		setTitle("Assignment 3");
+		setSize(WIN_WIDTH,WIN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JPanel buttonPane = new JPanel();
+		lights = new Button();
+		lights.setLabel("Turn Lights On/Off");
+		buttonPane.add(lights);
+		add(buttonPane, BorderLayout.SOUTH);
+		
+		add(new ClippingShapes(WIN_HEIGHT, WIN_WIDTH));
+
+		setVisible(true);
+	}
+
+	public static void main(String[] args)
+	{
+		new ClippingDriver();
+	}
+}
