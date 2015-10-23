@@ -1,16 +1,24 @@
 package assignment3;
 
 import java.awt.*;
+import java.util.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-import assignment3.ClippingShapes.CvTrianlges;
-
 public class ClippingDriver extends JFrame
-{
-	int WIN_HEIGHT = 700;
-	int WIN_WIDTH = 900;
+{	
+	final int WIN_HEIGHT = 700;
+	final int WIN_WIDTH = 900;
 
 	Button lights;
+	boolean lightOn = true;
+	
+	JPanel buttonPanel;
+	
+	ArrayList<DrawShapes> triangles = new ArrayList<DrawShapes>();
+	
+	int triSize = 100;
+	int triNum = 3;
 
 	public ClippingDriver()
 	{
@@ -20,17 +28,57 @@ public class ClippingDriver extends JFrame
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JPanel buttonPane = new JPanel();
-		lights = new Button();
-		lights.setLabel("Turn Lights On/Off");
-		buttonPane.add(lights);
-		add(buttonPane, BorderLayout.SOUTH);
+		lights = new Button("Turn Lights Off");
+		buttonPanel = new JPanel();
+		buttonPanel.add(lights);
 		
-		add(new ClippingShapes(WIN_HEIGHT, WIN_WIDTH));
-
+		add(buttonPanel, BorderLayout.SOUTH);
+		
+		lights.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(lightOn)
+				{
+					lights.setLabel("Turn Lights On");
+					lightOn = false;
+				}
+				else
+				{
+					lights.setLabel("Turn Lights Off");
+					lightOn = true;
+				}
+			}
+		});
+		
 		setVisible(true);
+		
+		generateShapes();
 	}
 
+	public void generateShapes()
+	{
+		Random randX = new Random();
+		Random randY = new Random();
+		
+		for(int i = 0; i < triNum; i++)
+		{
+			int x = randX.nextInt(900);
+			int y = randY.nextInt(700);
+			triangles.add(new DrawShapes(x, y, triSize));
+		}
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponents(g);
+		
+		for(DrawShapes x : triangles)
+		{
+			x.draw(g);
+		}
+	}
+	
 	public static void main(String[] args)
 	{
 		new ClippingDriver();
