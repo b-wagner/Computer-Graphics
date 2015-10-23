@@ -1,0 +1,99 @@
+package assignment3;
+
+import java.awt.*;
+import javax.swing.*;
+import java.util.*;
+
+public class DrawShapes extends JPanel
+{
+	int maxX, maxY, minMaxXY, triSize;
+	Color triColor;
+	
+	Point triCenter;
+	
+	int[] x = new int[3];
+	int[] y = new int[3];
+	
+	float q = 0.1F;
+	float p = 1-q;
+	
+	StoreLines lines = new StoreLines();
+
+	public DrawShapes(int x, int y, int size)
+	{
+		triCenter = new Point();
+		
+		triCenter.setLocation(x, y);
+		triSize = size;
+		
+		setPoints();
+	}
+
+	public int iX(float x)
+	{
+		return Math.round(x);
+	}
+
+	public int iY(float y)
+	{ 
+		//return  maxY - Math.round(y);
+		return  Math.round(y);
+	}
+	
+	public void setPoints()
+	{
+		x[0] = triCenter.x - (triSize/2);
+		x[1] = triCenter.x;
+		x[2] = triCenter.x + (triSize/2);
+		
+		y[0] = triCenter.y + (triSize/2);
+		y[1] = triCenter.y - (triSize/2);
+		y[2] = y[0];
+	}
+
+	public void updatePoints()
+	{
+		int[] updateX = new int[3];
+		int[] updateY = new int[3];
+		
+		updateX[0] = iX(p * x[0] + q * x[1]);
+		updateX[1] = iX(p * x[1] + q * x[2]);
+		updateX[2] = iX(p * x[2] + q * x[0]);
+		
+		updateY[0] = iY(p * y[0] + q * y[1]);
+		updateY[1] = iY(p * y[1] + q * y[2]);
+		updateY[2] = iY(p * y[2] + q * y[0]);
+		
+		for(int i = 0; i < x.length; i++)
+		{
+			x[i] = updateX[i];
+			y[i] = updateY[i];
+		}
+	}
+	
+	public void storePoint()
+	{
+		for(int i = 0; i < x.length; i++)
+		{
+			lines.setLine(new Point(x[i], y[i]));
+		}
+		
+		setPoints();
+	}
+	
+	public void draw(Graphics g)
+	{
+		g.setColor(Color.blue);
+		
+		for(int i = 0; i < 18; i++)
+		{
+			g.drawLine(x[0], y[0], x[1], y[1]);
+			g.drawLine(x[1], y[1], x[2], y[2]);
+			g.drawLine(x[2], y[2], x[0], y[0]);
+			
+			storePoint();
+		}
+		
+		setPoints();
+	} 
+}
