@@ -1,0 +1,24 @@
+package assignment3;
+
+import java.util.*;
+import java.awt.*;
+
+public class StoreLines 
+{
+	ArrayList<Point> lines;
+	
+	public StoreLines()
+	{
+		lines = new ArrayList<>();
+	}
+	
+	public void setLine(Point p)
+	{
+		lines.add(p);
+	}
+	
+	public ArrayList<Point> getLines()
+	{
+		return lines;
+	}
+}
