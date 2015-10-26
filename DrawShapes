@@ -36,7 +36,6 @@ public class DrawShapes extends JPanel
 
 	public int iY(float y)
 	{ 
-		//return  maxY - Math.round(y);
 		return  Math.round(y);
 	}
 	
@@ -77,8 +76,6 @@ public class DrawShapes extends JPanel
 		{
 			lines.setLine(new Point(x[i], y[i]));
 		}
-		
-		setPoints();
 	}
 	
 	public void draw(Graphics g)
@@ -91,6 +88,7 @@ public class DrawShapes extends JPanel
 			g.drawLine(x[1], y[1], x[2], y[2]);
 			g.drawLine(x[2], y[2], x[0], y[0]);
 			
+			updatePoints();
 			storePoint();
 		}
 		
