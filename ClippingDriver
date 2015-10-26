@@ -12,13 +12,16 @@ public class ClippingDriver extends JFrame
 
 	Button lights;
 	boolean lightOn = true;
-	
+
 	JPanel buttonPanel;
-	
+
 	ArrayList<DrawShapes> triangles = new ArrayList<DrawShapes>();
-	
-	int triSize = 100;
+
+	int triSize = 500;
 	int triNum = 3;
+	
+	Spotlight spot;
+	Point mouseClick;
 
 	public ClippingDriver()
 	{
@@ -26,33 +29,39 @@ public class ClippingDriver extends JFrame
 		setSize(WIN_WIDTH,WIN_HEIGHT);
 		setResizable(false);
 		setLocationRelativeTo(null);
+		setCursor(Cursor.CROSSHAIR_CURSOR);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		lights = new Button("Turn Lights Off");
 		buttonPanel = new JPanel();
 		buttonPanel.add(lights);
-		
+
 		add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		lights.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				if(lightOn)
 				{
+					getContentPane().setBackground(Color.black);
 					lights.setLabel("Turn Lights On");
 					lightOn = false;
+					spot = new Spotlight(100, 100);
+					repaint();
 				}
 				else
 				{
+					getContentPane().setBackground(Color.white);
+					repaint();
 					lights.setLabel("Turn Lights Off");
 					lightOn = true;
 				}
 			}
 		});
-		
+
 		setVisible(true);
-		
+
 		generateShapes();
 	}
 
@@ -60,7 +69,7 @@ public class ClippingDriver extends JFrame
 	{
 		Random randX = new Random();
 		Random randY = new Random();
-		
+
 		for(int i = 0; i < triNum; i++)
 		{
 			int x = randX.nextInt(900);
@@ -68,17 +77,25 @@ public class ClippingDriver extends JFrame
 			triangles.add(new DrawShapes(x, y, triSize));
 		}
 	}
-	
-	public void paintComponent(Graphics g)
+
+	public void paint(Graphics g)
 	{
-		super.paintComponents(g);
-		
-		for(DrawShapes x : triangles)
+		super.paint(g);
+
+		if(lightOn)
 		{
-			x.draw(g);
+			for(DrawShapes x : triangles)
+			{
+				x.draw(g);
+			}
+		}
+
+		if(!lightOn)
+		{
+			spot.draw(g);
 		}
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new ClippingDriver();
