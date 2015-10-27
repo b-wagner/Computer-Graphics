@@ -1,0 +1,125 @@
+package assignment3;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.swing.*;
+
+public class ClippingDisplay extends JPanel
+{
+	int triNum = 3;
+	int triSize = 500;
+
+	boolean lightOn = true;
+
+	ArrayList<DrawShapes> triangles = new ArrayList<DrawShapes>();
+
+	Spotlight spot;
+	
+	int speed = 30;
+
+	public ClippingDisplay(int height, int width)
+	{
+		this.setSize(height, width);
+		spot = new Spotlight();
+
+		generateShapes();
+	}
+
+	public void generateShapes()
+	{
+		Random randX = new Random();
+		Random randY = new Random();
+
+		for(int i = 0; i < triNum; i++)
+		{
+			int x = randX.nextInt(900);
+			int y = randY.nextInt(700);
+			triangles.add(new DrawShapes(x, y, triSize));
+		}
+	}
+
+	public void mouseClick(int mouseX, int mouseY)
+	{
+		Point spotPoint = new Point();
+		spotPoint.x = mouseX;
+		spotPoint.y = mouseY;
+
+		if(!lightOn)
+		{
+			spot.setLight(spotPoint);
+			//System.out.println(spotPoint);
+			repaint();
+		}
+	}
+
+	public void button()
+	{
+		if(lightOn)
+		{
+			lightOn = false;
+		}
+		else
+		{
+			lightOn = true;
+		}
+		repaint();
+	}
+	
+	public void north()
+	{
+		if(!lightOn)
+		{
+			spot.move(1, speed);
+			repaint();
+		}
+	}
+	
+	public void south()
+	{
+		if(!lightOn)
+		{
+			spot.move(3, speed);
+			repaint();
+		}
+	}
+	
+	public void west()
+	{
+		if(!lightOn)
+		{
+			spot.move(4, speed);
+			repaint();
+		}
+	}
+	
+	public void east()
+	{
+		if(!lightOn)
+		{
+			spot.move(2, speed);
+			repaint();
+		}
+	}
+
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+
+		if(!lightOn)
+		{
+			setBackground(Color.black);
+			spot.draw(g);
+		}
+		else
+		{
+			this.setBackground(Color.white);
+			
+			for(DrawShapes x : triangles)
+			{
+				x.draw(g);
+			}
+		}
+	}
+}
