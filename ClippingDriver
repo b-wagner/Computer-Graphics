@@ -1,56 +1,88 @@
 package assignment3;
 
 import java.awt.*;
+import java.util.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class Spotlight extends JPanel
-{
-	int size = 100;
-	
-	Point spotLoc;
-	
-	public Spotlight()
+public class ClippingDriver extends JFrame
+{	
+	final int WIN_HEIGHT = 700;
+	final int WIN_WIDTH = 900;
+
+	Button lights;
+
+	JPanel buttonPanel;
+
+	public ClippingDriver() //need to add shapes display to final driver
 	{
-		spotLoc = new Point();
-	}
-	
-	public void setLight(Point mouseLoc)
-	{
-		spotLoc.setLocation(mouseLoc.getX(), mouseLoc.getY());
-	}
-	
-	public void move(int dir, int speed) //<-- dont think this is working...
-	{
-		Point keyMove = new Point();
-		
-		switch(dir)
+		setTitle("Assignment 3");
+		setSize(WIN_WIDTH,WIN_HEIGHT);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setCursor(Cursor.CROSSHAIR_CURSOR);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		ClippingDisplay display = new ClippingDisplay(WIN_HEIGHT, WIN_WIDTH);
+
+		lights = new Button("Turn Lights ON/OFF");
+		buttonPanel = new JPanel();
+		buttonPanel.add(lights);
+
+		add(buttonPanel, BorderLayout.SOUTH);
+		add(display, BorderLayout.CENTER);
+
+		lights.addActionListener(new ActionListener()
 		{
-			case 1:
-				keyMove.x = spotLoc.x;
-				keyMove.y = spotLoc.y-speed;
-				setLight(keyMove);
-				break;
-			case 2:
-				keyMove.x = spotLoc.x+speed;
-				keyMove.y = spotLoc.y;
-				setLight(keyMove);
-				break;
-			case 3:
-				keyMove.x = spotLoc.x;
-				keyMove.y = spotLoc.y+speed;
-				setLight(keyMove);
-				break;
-			case 4:
-				keyMove.x = spotLoc.x-speed;
-				keyMove.y = spotLoc.y;
-				setLight(keyMove);
-				break;
-		}
+			public void actionPerformed(ActionEvent e)
+			{
+				display.button();
+				lights.setFocusable(false);
+			}
+		});
+
+		this.addMouseListener(new MouseAdapter()
+		{
+			public void mousePressed(MouseEvent evt)
+			{
+				display.mouseClick(evt.getX(), evt.getY());
+			};
+		});
+
+		this.addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent k)
+			{
+				int key = k.getKeyCode();
+				
+				if(key == KeyEvent.VK_UP)
+				{
+					display.north();
+				}
+				else if(key == KeyEvent.VK_RIGHT)
+				{
+					display.east();
+				}
+				else if(key == KeyEvent.VK_DOWN)
+				{
+					display.south();
+				}
+				else if(key == KeyEvent.VK_LEFT)
+				{
+					display.west();
+				}
+			}
+			
+			public void keyReleased(KeyEvent ke){}
+			public void keyTyped(KeyEvent ke){}
+
+		});
+
+		setVisible(true);
 	}
-	
-	public void draw(Graphics g)
+
+	public static void main(String[] args)
 	{
-		g.setColor(Color.white);
-		g.fillRect((int)spotLoc.getX(), (int)spotLoc.getY(), size, size);
+		new ClippingDriver();
 	}
 }
