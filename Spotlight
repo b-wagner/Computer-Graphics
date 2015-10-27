@@ -9,11 +9,43 @@ public class Spotlight extends JPanel
 	
 	Point spotLoc;
 	
-	public Spotlight(int mouseX, int mouseY)
+	public Spotlight()
 	{
 		spotLoc = new Point();
+	}
+	
+	public void setLight(Point mouseLoc)
+	{
+		spotLoc.setLocation(mouseLoc.getX(), mouseLoc.getY());
+	}
+	
+	public void move(int dir, int speed) //<-- dont think this is working...
+	{
+		Point keyMove = new Point();
 		
-		spotLoc.setLocation(mouseX, mouseY);
+		switch(dir)
+		{
+			case 1:
+				keyMove.x = spotLoc.x;
+				keyMove.y = spotLoc.y-speed;
+				setLight(keyMove);
+				break;
+			case 2:
+				keyMove.x = spotLoc.x+speed;
+				keyMove.y = spotLoc.y;
+				setLight(keyMove);
+				break;
+			case 3:
+				keyMove.x = spotLoc.x;
+				keyMove.y = spotLoc.y+speed;
+				setLight(keyMove);
+				break;
+			case 4:
+				keyMove.x = spotLoc.x-speed;
+				keyMove.y = spotLoc.y;
+				setLight(keyMove);
+				break;
+		}
 	}
 	
 	public void draw(Graphics g)
